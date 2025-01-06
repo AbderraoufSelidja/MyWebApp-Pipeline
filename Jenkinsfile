@@ -3,8 +3,10 @@ pipeline {
 
     environment {
         MAVEN_REPO_USERNAME = credentials('github-selidja-abdo')
-        MAVEN_REPO_PASSWORD = credentials('b4c943e0c27a4b5f8e1769bf0e28db19')
+        MAVEN_REPO_PASSWORD = credentials('github-selidja-abdo')
     }
+
+
 
     stages {
         // Stage for running tests
