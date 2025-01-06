@@ -20,6 +20,18 @@ pipeline {
                 }
             }
         }
+         // Stage for Code Quality (SonarQube Quality Gate Check)
+                stage('CODEQUALITY') {
+                    steps {
+                        script {
+                            echo 'Checking SonarQube Quality Gate...'
+                            def qualityGate = waitForQualityGate()
+                            if (qualityGate.status != 'OK') {
+                                error "SonarQube Quality Gate failed: ${qualityGate.status}"
+                            }
+                        }
+                    }
+                }
     }
 
     post {
