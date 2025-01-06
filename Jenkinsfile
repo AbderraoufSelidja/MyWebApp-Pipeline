@@ -1,5 +1,5 @@
 pipeline {
-    agent any // This specifies hat the pipeline can run on any available agent
+    agent any // This specifies hat the pipeline can run on any available agen
 
     environment {
         MAVEN_REPO_USERNAME = credentials('github-selidja-abdo')
