@@ -32,7 +32,8 @@ pipeline {
         //         }
         //     }
         // }
-
+        
+        // Stage for Code Quality (SonarQube Quality Gate Check)
         // stage('CODEQUALITY') {
         //             steps {
         //                 script {
@@ -45,6 +46,7 @@ pipeline {
         //             }
         //         }
 
+        // Stage for building the project
          stage('BUILD') {
             steps {
                 script {
@@ -53,11 +55,34 @@ pipeline {
                 }
             }
         }
+
+        // Stage for deploying the application
         stage('DEPLOY') {
             steps {
                 script {
                     echo 'Deploying the application...'
                     sh 'gradle publish' 
+                }
+            }
+        }
+        
+        // Stage for notifications with email, Slack)
+        stage('NOTIFY') {
+            steps {
+                script {
+                    echo 'Sending email notification...'
+                    // Call Gradle sendMail task
+                    sh 'gradle sendMail'
+                }
+            }
+        }
+        // Stage for notifications with Slack
+        stage('NOTIFY') {
+            steps {
+                script {
+                    echo 'Sending message notification with slack...'
+                    // Call Gradle sendMail task
+                    sh 'gradle notifySlack'
                 }
             }
         }
