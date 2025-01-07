@@ -21,7 +21,18 @@ pipeline {
             }
         }
         
-   
+     // Stage for Code Analysis (SonarQube)
+        // stage('CODEANALYSIS') {
+        //     steps {
+        //         script {
+        //             echo 'Running SonarQube analysis...'
+        //             withSonarQubeEnv('sonarQube') {
+        //                 sh 'gradle sonarqube' 
+        //             }
+        //         }
+        //     }
+        // }
+    }
 
     post {
         always {
@@ -35,4 +46,4 @@ pipeline {
         }
     }
 }
-}
+
