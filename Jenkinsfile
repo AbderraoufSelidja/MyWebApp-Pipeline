@@ -1,36 +1,33 @@
 pipeline {
-    agent any // This specifies hat the pipeline can run on any available agen
+    agent any 
 
     environment {
         MAVEN_REPO_USERNAME = credentials('github-selidja-abdo')
         MAVEN_REPO_PASSWORD = credentials('github-selidja-abdo')
     }
 
-
-
     stages {
-        // Stage for running tests
-        stage('TEST') {
+        // Étape pour exécuter les tests
+        stage('test') {
             steps {
                 script {
-                    echo 'Running tests...'
-                    // Run your tests here, e.g. using Gradle or Maven
+                    echo 'Exécution des tests...'
                     sh 'chmod +x gradle'
                     sh 'gradle test'
                 }
             }
-             post {
-            always {
-                cucumber '**/reports/*.json'
+            post {
+                always {
+                    cucumber '**/reports/*.json'
+                }
             }
         }
-        }
         
-     // Stage for Code Analysis (SonarQube)
-        stage('CODEANALYSIS') {
+        // Étape pour l'analyse de code (SonarQube)
+        stage('codeAnalysis') {
             steps {
                 script {
-                    echo 'Running SonarQube analysis...'
+                    echo 'Exécution de l’analyse SonarQube...'
                     withSonarQubeEnv('sonar') {
                         sh 'gradle sonar' 
                     }
@@ -38,97 +35,87 @@ pipeline {
             }
         }
         
-        // Stage for Code Quality (SonarQube Quality Gate Check)
-        stage('CODEQUALITY') {
-                    steps {
-                        script {
-                            echo 'Checking SonarQube Quality Gate...'
-                            def qualityGate = waitForQualityGate()
-                            if (qualityGate.status != 'OK') {
-                                error "SonarQube Quality Gate failed: ${qualityGate.status}"
-                            }
-                        }
-                    }
-                }
-
-        // Stage for building the project
-         stage('BUILD') {
+        // Étape pour vérifier la qualité du code (SonarQube Quality Gate)
+        stage('codeQuality') {
             steps {
                 script {
-                    echo 'Building the project...'
+                    echo 'Vérification du Quality Gate de SonarQube...'
+                    def qualityGate = waitForQualityGate()
+                    if (qualityGate.status != 'OK') {
+                        error "Le Quality Gate de SonarQube a échoué : ${qualityGate.status}"
+                    }
+                }
+            }
+        }
+
+        // Étape pour construire le projet
+        stage('build') {
+            steps {
+                script {
+                    echo 'Construction du projet...'
                     sh 'gradle build'
                 }
             }
-            
         }
 
-        stage('Archive Artifacts') {
-    steps {
+        // Étape pour archiver les artefacts
+        stage('archiveArtifacts') {
+            steps {
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'build/reports/tests/**/*', fingerprint: true
+                archiveArtifacts artifacts: 'build/reports/cucumber/**/*', fingerprint: true
+            }
+        }
 
-        archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
-
-        // archiveArtifacts artifacts: 'build/docs/javadoc/**/*', fingerprint: true
-
-        archiveArtifacts artifacts: 'build/reports/tests/**/*', fingerprint: true
-
-        archiveArtifacts artifacts: 'build/reports/cucumber/**/*', fingerprint: true
-    }
-}
-
-        // Stage for deploying the application
-        stage('DEPLOY') {
+        // Étape pour déployer l'application
+        stage('deploy') {
             steps {
                 script {
-                    echo 'Deploying the application...'
+                    echo 'Déploiement de l’application...'
                     sh 'gradle publish' 
                 }
             }
         }
         
-        // Stage for notifications with email, Slack)
-        stage('NOTIFYMAIL') {
+        // Étape pour envoyer des notifications par e-mail
+        stage('notifyMail') {
             steps {
                 script {
                     currentBuild.result = currentBuild.result ?: 'SUCCESS'
                     if (currentBuild.result == 'SUCCESS') {
-                        echo 'Sending success notifications...'
+                        echo 'Envoi de notifications de succès...'
                         mail to: 'raouf.selidja@gmail.com',
-                             subject: "Build Success: ",
-                             body: ":rocket: *Deploiement termine avec succes!* :tada:"
+                             subject: "Succès de la construction : ",
+                             body: ":rocket: *Déploiement terminé avec succès!* :tada:"
                     } else {
-                        echo 'Sending failure notifications...'
+                        echo 'Envoi de notifications d’échec...'
                         mail to: 'raouf.selidja@gmail.com',
-                             subject: "Build Failed: ",
-                             body: "The build for  failed. Check the logs for details."
+                             subject: "Échec de la construction : ",
+                             body: "La construction a échoué. Consultez les journaux pour plus de détails."
                     }
                 }
             }
         }
-        // Stage for notifications with Slack
-        stage('NOTIFYSLACK') {
+        
+        // Étape pour envoyer des notifications avec Slack
+        stage('notifySlack') {
             steps {
-                // script {
-                //     echo 'Sending message notification with slack...'
-                //     // Call Gradle sendMail task
-                //     sh 'gradle notifySlack'
-                // }
                 slackSend channel: '#web-app',
                     color: 'good',
-                    message: ':rocket: *Deploiement termine avec succes!* :tada:'
+                    message: ':rocket: *Déploiement terminé avec succès!* :tada:'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished.'
+            echo 'Pipeline terminé.'
         }
         success {
-            echo 'Pipeline completed successfully.'
+            echo 'Pipeline complété avec succès.'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Le pipeline a échoué.'
         }
     }
 }
-
