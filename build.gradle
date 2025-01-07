@@ -96,7 +96,7 @@ task notifySlack {
     doLast {
         def webhookUrl = "task notifySlack {
     doLast {
-        def webhookUrl = "https://hooks.slack.com/services/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" 
+        def webhookUrl = "https://hooks.slack.com/services/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" 
         def message = '{"text": "🚀 Déploiement terminé avec succès hh !"}'
 
         def connection = new URL(webhookUrl).openConnection()
