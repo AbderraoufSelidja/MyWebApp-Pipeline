@@ -79,11 +79,14 @@ pipeline {
         // Stage for notifications with Slack
         stage('NOTIFYSLACK') {
             steps {
-                script {
-                    echo 'Sending message notification with slack...'
-                    // Call Gradle sendMail task
-                    sh 'gradle notifySlack'
-                }
+                // script {
+                //     echo 'Sending message notification with slack...'
+                //     // Call Gradle sendMail task
+                //     sh 'gradle notifySlack'
+                // }
+                slackSend channel: '#web-app',
+                    color: 'good',
+                    message: 'Hi'
             }
         }
     }
