@@ -67,7 +67,7 @@ pipeline {
 
         archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
 
-        archiveArtifacts artifacts: 'build/docs/javadoc/**/*', fingerprint: true
+        // archiveArtifacts artifacts: 'build/docs/javadoc/**/*', fingerprint: true
 
         archiveArtifacts artifacts: 'build/reports/tests/**/*', fingerprint: true
 
