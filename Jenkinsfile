@@ -75,7 +75,7 @@ pipeline {
                         echo 'Sending success notifications...'
                         mail to: 'raouf.selidja@gmail.com',
                              subject: "Build Success: ",
-                             body: "Deploiement termine avec succes!"
+                             body: ":rocket: *Deploiement termine avec succes!* :tada:"
                     } else {
                         echo 'Sending failure notifications...'
                         mail to: 'raouf.selidja@gmail.com',
@@ -95,7 +95,7 @@ pipeline {
                 // }
                 slackSend channel: '#web-app',
                     color: 'good',
-                    message: 'Deploiement termine avec succes!'
+                    message: ':rocket: *Deploiement termine avec succes!* :tada:'
             }
         }
     }
