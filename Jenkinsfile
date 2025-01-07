@@ -27,7 +27,7 @@ pipeline {
         stage('codeAnalysis') {
             steps {
                 script {
-                    echo 'Execution de l’analyse SonarQube...'
+                    echo 'Execution de lanalyse SonarQube...'
                     withSonarQubeEnv('sonar') {
                         sh 'gradle sonar' 
                     }
@@ -71,7 +71,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    echo 'Deploiement de l’application...'
+                    echo 'Deploiement de lapplication...'
                     sh 'gradle publish' 
                 }
             }
@@ -83,14 +83,14 @@ pipeline {
                 script {
                     currentBuild.result = currentBuild.result ?: 'SUCCESS'
                     if (currentBuild.result == 'SUCCESS') {
-                        echo 'Envoi de notifications de succès...'
+                        echo 'Envoi de notifications de succes...'
                         mail to: 'raouf.selidja@gmail.com',
                              subject: "Succes de la construction : ",
                              body: ":rocket: *Deploiement termine avec succes!* :tada:"
                     } else {
                         echo 'Envoi de notifications d’échec...'
                         mail to: 'raouf.selidja@gmail.com',
-                             subject: "Échec de la construction : ",
+                             subject: "Echec de la construction : ",
                              body: "La construction a echoue. Consultez les journaux pour plus de details."
                     }
                 }
