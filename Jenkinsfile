@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying the application...'
-                    sh 'gradlew publish' 
+                    sh 'gradle publish' 
                 }
             }
         }
