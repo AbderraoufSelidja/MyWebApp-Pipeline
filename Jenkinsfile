@@ -19,6 +19,11 @@ pipeline {
                     sh 'gradle test'
                 }
             }
+             post {
+            always {
+                cucumber '**/reports/*.json'
+            }
+        }
         }
         
      // Stage for Code Analysis (SonarQube)
@@ -45,7 +50,6 @@ pipeline {
         //                 }
         //             }
         //         }
-        
 
         // Stage for building the project
          stage('BUILD') {
