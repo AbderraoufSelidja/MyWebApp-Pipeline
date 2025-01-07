@@ -22,16 +22,16 @@ pipeline {
         }
         
      // Stage for Code Analysis (SonarQube)
-        // stage('CODEANALYSIS') {
-        //     steps {
-        //         script {
-        //             echo 'Running SonarQube analysis...'
-        //             withSonarQubeEnv('sonarQube') {
-        //                 sh 'gradle sonarqube' 
-        //             }
-        //         }
-        //     }
-        // }
+        stage('CODEANALYSIS') {
+            steps {
+                script {
+                    echo 'Running SonarQube analysis...'
+                    withSonarQubeEnv('sonar') {
+                        sh 'gradle sonar' 
+                    }
+                }
+            }
+        }
         
         // Stage for Code Quality (SonarQube Quality Gate Check)
         // stage('CODEQUALITY') {
