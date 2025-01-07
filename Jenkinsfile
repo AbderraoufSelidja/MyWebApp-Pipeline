@@ -86,7 +86,7 @@ pipeline {
                 // }
                 slackSend channel: '#web-app',
                     color: 'good',
-                    message: 'Déploiement terminé avec succès!'
+                    message: 'Deploiement termine avec succes!'
             }
         }
     }
