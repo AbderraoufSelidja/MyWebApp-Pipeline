@@ -94,7 +94,7 @@ import groovy.json.JsonOutput
 
 task notifySlack {
     doLast {
-        def webhookUrl = "https://hooks.slack.com/services/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" // Remplacez par votre URL
+        def webhookUrl = "https://hooks.slack.com/services/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" // Remplacez par votre URL
         def message = '{"text": "🚀 Déploiement terminé avec succès hh !"}'
 
         def connection = new URL(webhookUrl).openConnection()
