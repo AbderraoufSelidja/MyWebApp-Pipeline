@@ -11,7 +11,7 @@ pipeline {
         stage('test') {
             steps {
                 script {
-                    echo 'Exécution des tests...'
+                    echo 'Execution des tests...'
                     sh 'chmod +x gradle'
                     sh 'gradle test'
                 }
@@ -27,7 +27,7 @@ pipeline {
         stage('codeAnalysis') {
             steps {
                 script {
-                    echo 'Exécution de l’analyse SonarQube...'
+                    echo 'Execution de l’analyse SonarQube...'
                     withSonarQubeEnv('sonar') {
                         sh 'gradle sonar' 
                     }
@@ -39,10 +39,10 @@ pipeline {
         stage('codeQuality') {
             steps {
                 script {
-                    echo 'Vérification du Quality Gate de SonarQube...'
+                    echo 'Verification du Quality Gate de SonarQube...'
                     def qualityGate = waitForQualityGate()
                     if (qualityGate.status != 'OK') {
-                        error "Le Quality Gate de SonarQube a échoué : ${qualityGate.status}"
+                        error "Le Quality Gate de SonarQube a echoue : ${qualityGate.status}"
                     }
                 }
             }
@@ -71,7 +71,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    echo 'Déploiement de l’application...'
+                    echo 'Deploiement de l’application...'
                     sh 'gradle publish' 
                 }
             }
@@ -85,13 +85,13 @@ pipeline {
                     if (currentBuild.result == 'SUCCESS') {
                         echo 'Envoi de notifications de succès...'
                         mail to: 'raouf.selidja@gmail.com',
-                             subject: "Succès de la construction : ",
-                             body: ":rocket: *Déploiement terminé avec succès!* :tada:"
+                             subject: "Succes de la construction : ",
+                             body: ":rocket: *Deploiement termine avec succes!* :tada:"
                     } else {
                         echo 'Envoi de notifications d’échec...'
                         mail to: 'raouf.selidja@gmail.com',
                              subject: "Échec de la construction : ",
-                             body: "La construction a échoué. Consultez les journaux pour plus de détails."
+                             body: "La construction a echoue. Consultez les journaux pour plus de details."
                     }
                 }
             }
@@ -102,20 +102,20 @@ pipeline {
             steps {
                 slackSend channel: '#web-app',
                     color: 'good',
-                    message: ':rocket: *Déploiement terminé avec succès!* :tada:'
+                    message: ':rocket: *Deploiement termine avec succes!* :tada:'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline terminé.'
+            echo 'Pipeline termine.'
         }
         success {
-            echo 'Pipeline complété avec succès.'
+            echo 'Pipeline complete avec succes.'
         }
         failure {
-            echo 'Le pipeline a échoué.'
+            echo 'Le pipeline a echoue.'
         }
     }
 }
