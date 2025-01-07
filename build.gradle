@@ -27,17 +27,19 @@ test {
         useJUnit()
     }
 }
-//test.finalizedBy "generateCucumberReports"
-//test.finalizedBy "jacocoTestReport"
-//test.finalizedBy "javadoc"
-//test.finalizedBy "sonar"
-//test.finalizedBy "publish"
-//publish.dependsOn "generateCucumberReports"
-//publish.dependsOn "jacocoTestReport"
-//publish.dependsOn "javadoc"
-//publish.dependsOn "sonar"
-//publish.finalizedBy "notifySlack"
-//publish.finalizedBy "sendMail"
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "myProjectKey"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.login", "096da46fd83b50c59e72bf6019f9e6a11203f50d"
+        property "sonar.sources", "src/main/java"
+        property "sonar.skipCompile" , 'true'
+        property "sonar.tests", "src/test/java"
+        property "sonar.java.binaries", "build/classes/java"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
 
 
 cucumberReports {
