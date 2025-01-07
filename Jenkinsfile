@@ -67,7 +67,7 @@ pipeline {
         }
         
         // Stage for notifications with email, Slack)
-        stage('NOTIFY') {
+        stage('NOTIFYMAIL') {
             steps {
                 script {
                     echo 'Sending email notification...'
@@ -77,7 +77,7 @@ pipeline {
             }
         }
         // Stage for notifications with Slack
-        stage('NOTIFY') {
+        stage('NOTIFYSLACK') {
             steps {
                 script {
                     echo 'Sending message notification with slack...'
