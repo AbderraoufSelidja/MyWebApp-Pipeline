@@ -70,9 +70,18 @@ pipeline {
         stage('NOTIFYMAIL') {
             steps {
                 script {
-                    echo 'Sending email notification...'
-                    // Call Gradle sendMail task
-                    sh 'gradle sendMail'
+                    currentBuild.result = currentBuild.result ?: 'SUCCESS'
+                    if (currentBuild.result == 'SUCCESS') {
+                        echo 'Sending success notifications...'
+                        mail to: 'raouf.selidja@gmail.com',
+                             subject: "Build Success: ",
+                             body: "Deploiement termine avec succes!"
+                    } else {
+                        echo 'Sending failure notifications...'
+                        mail to: 'raouf.selidja@gmail.com',
+                             subject: "Build Failed: ",
+                             body: "The build for  failed. Check the logs for details."
+                    }
                 }
             }
         }
