@@ -49,8 +49,15 @@ pipeline {
             steps {
                 script {
                     echo 'Building the project...'
-                    // Build your project, e.g., using Gradle or Maven
                     sh 'gradle build'
+                }
+            }
+        }
+        stage('DEPLOY') {
+            steps {
+                script {
+                    echo 'Deploying the application...'
+                    sh 'gradlew publish' 
                 }
             }
         }
