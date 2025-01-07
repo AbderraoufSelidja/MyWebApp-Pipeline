@@ -39,17 +39,17 @@ pipeline {
         }
         
         // Stage for Code Quality (SonarQube Quality Gate Check)
-        // stage('CODEQUALITY') {
-        //             steps {
-        //                 script {
-        //                     echo 'Checking SonarQube Quality Gate...'
-        //                     def qualityGate = waitForQualityGate()
-        //                     if (qualityGate.status != 'OK') {
-        //                         error "SonarQube Quality Gate failed: ${qualityGate.status}"
-        //                     }
-        //                 }
-        //             }
-        //         }
+        stage('CODEQUALITY') {
+                    steps {
+                        script {
+                            echo 'Checking SonarQube Quality Gate...'
+                            def qualityGate = waitForQualityGate()
+                            if (qualityGate.status != 'OK') {
+                                error "SonarQube Quality Gate failed: ${qualityGate.status}"
+                            }
+                        }
+                    }
+                }
 
         // Stage for building the project
          stage('BUILD') {
@@ -59,12 +59,7 @@ pipeline {
                     sh 'gradle build'
                 }
             }
-             post {
-                success {
-                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
-                    archiveArtifacts artifacts: 'build/docs/javadoc/**/*', fingerprint: true
-                }
-            }
+            
         }
 
         stage('Archive Artifacts') {
