@@ -32,6 +32,28 @@ pipeline {
         //         }
         //     }
         // }
+
+        // stage('CODEQUALITY') {
+        //             steps {
+        //                 script {
+        //                     echo 'Checking SonarQube Quality Gate...'
+        //                     def qualityGate = waitForQualityGate()
+        //                     if (qualityGate.status != 'OK') {
+        //                         error "SonarQube Quality Gate failed: ${qualityGate.status}"
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+         stage('BUILD') {
+            steps {
+                script {
+                    echo 'Building the project...'
+                    // Build your project, e.g., using Gradle or Maven
+                    sh 'gradle build'
+                }
+            }
+        }
     }
 
     post {
