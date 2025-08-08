@@ -17,33 +17,32 @@ It covers the complete pipeline from building and testing to deployment and noti
 
 ---
 
-## 🛠️ CI Pipeline Phases
+## CI Pipeline Phases
 
-### 1️⃣ Test Phase
+### 1 Test Phase
 - Run unit tests  
 - Archive unit test results  
 - Generate **Cucumber** test reports  
 
-### 2️⃣ Code Analysis
+### 2 Code Analysis
 - Analyze code quality using **SonarQube**
 
-### 3️⃣ Code Quality Gate
+### 3 Code Quality Gate
 - Verify **SonarQube Quality Gates** status  
 - Stop pipeline execution if status is **FAILED**
 
-### 4️⃣ Build Phase
+### 4 Build Phase
 - Generate **JAR** file  
 - Generate **documentation**  
 - Archive JAR and documentation  
 
-### 5️⃣ Deploy Phase
+### 5 Deploy Phase
 - Deploy the generated JAR to [MyMavenRepo](https://mymavenrepo.com/)
 
-### 6️⃣ Notification Phase
+### 6 Notification Phase
 - Send success notifications via:
   - Email  
   - Slack  
 - Send failure notifications in case of any pipeline stage error
 
 
-## 📂 Project Structure
